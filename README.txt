@@ -1,15 +1,1 @@
-HIA — site d'attente
-
-Contenu :
-- index.html : page d'accueil
-- logo-base.png : logo fixe
-- butterfly-left.png / butterfly-right.png : ailes animées
-- favicon.svg : icône d'onglet
-- CNAME : domaine personnalisé
-
-Mise en ligne avec GitHub Pages :
-1. Créez un dépôt public.
-2. Importez tous les fichiers à la racine.
-3. Settings > Pages > Deploy from a branch > main / root.
-4. Dans Custom domain, indiquez hiabynevecosmetics.com.
-5. Configurez ensuite les DNS chez Infomaniak.
+HIA — papillon vivant\nRemplacer sur GitHub : index.html, logo-base.png, butterfly-left.png, butterfly-right.png, butterfly-body.png\nLe papillon reste au centre, bat doucement, vole sur la page, revient au H, fait une pause de 6 s, puis recommence.\n

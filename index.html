@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="HIA — bientôt.">
   <title>HIA</title>
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <style>
     :root {
       --bg:#f8f7f3;
@@ -16,27 +15,27 @@
     html,body { margin:0; min-height:100%; background:var(--bg); color:var(--ink); }
     body {
       min-height:100svh;
+      overflow:hidden;
       font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      display:grid;
-      place-items:center;
     }
     main {
       width:min(920px,92vw);
       min-height:100svh;
+      margin:0 auto;
       display:flex;
       flex-direction:column;
       align-items:center;
       justify-content:center;
-      padding:48px 20px 50px;
+      padding:42px 20px 52px;
       text-align:center;
     }
     .logo {
       position:relative;
       width:min(430px,76vw);
-      aspect-ratio:503 / 583;
-      margin-bottom:38px;
+      aspect-ratio:752 / 755;
+      margin-bottom:32px;
     }
-    .logo img {
+    .logo-base {
       position:absolute;
       inset:0;
       width:100%;
@@ -45,24 +44,77 @@
       user-select:none;
       pointer-events:none;
     }
-    .wing-left {
-      transform-origin:50% 42%;
-      animation:wingLeft 6s ease-in-out infinite;
+
+    /* Le papillon entier est un élément indépendant : il peut quitter le H. */
+    .butterfly-flyer {
+      position:fixed;
+      left:0;
+      top:0;
+      width:120px;
+      aspect-ratio:365 / 387;
+      z-index:20;
+      pointer-events:none;
+      opacity:0;
+      transform:translate3d(-9999px,-9999px,0);
+      transform-origin:50% 50%;
+      filter:drop-shadow(0 2px 1px rgba(0,0,0,.035));
+      will-change:transform;
     }
-    .wing-right {
-      transform-origin:50% 42%;
-      animation:wingRight 6s ease-in-out infinite;
+    .butterfly-flyer.ready { opacity:1; }
+
+    .butterfly-flyer img {
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      pointer-events:none;
+      user-select:none;
     }
-    @keyframes wingLeft {
-      0%,18%,100% { transform:perspective(600px) rotateY(0deg); }
-      7% { transform:perspective(600px) rotateY(8deg); }
-      11% { transform:perspective(600px) rotateY(2deg); }
+
+    .wing-left, .wing-right {
+      will-change:transform;
     }
-    @keyframes wingRight {
-      0%,18%,100% { transform:perspective(600px) rotateY(0deg); }
-      7% { transform:perspective(600px) rotateY(-8deg); }
-      11% { transform:perspective(600px) rotateY(-2deg); }
+
+    /* Au repos : un battement très lent, presque une respiration. */
+    .butterfly-flyer:not(.flying) .wing-left {
+      transform-origin:52% 54%;
+      animation:restLeft 4.2s ease-in-out infinite;
     }
+    .butterfly-flyer:not(.flying) .wing-right {
+      transform-origin:48% 54%;
+      animation:restRight 4.2s ease-in-out infinite;
+    }
+
+    /* En vol : battements plus visibles mais toujours doux. */
+    .butterfly-flyer.flying .wing-left {
+      transform-origin:52% 54%;
+      animation:flyLeft .46s ease-in-out infinite;
+    }
+    .butterfly-flyer.flying .wing-right {
+      transform-origin:48% 54%;
+      animation:flyRight .46s ease-in-out infinite;
+    }
+
+    @keyframes restLeft {
+      0%, 72%, 100% { transform:scaleX(1) rotate(0deg); }
+      82% { transform:scaleX(.86) rotate(-2deg); }
+      90% { transform:scaleX(1) rotate(0deg); }
+    }
+    @keyframes restRight {
+      0%, 72%, 100% { transform:scaleX(1) rotate(0deg); }
+      82% { transform:scaleX(.86) rotate(2deg); }
+      90% { transform:scaleX(1) rotate(0deg); }
+    }
+    @keyframes flyLeft {
+      0%,100% { transform:scaleX(1) rotate(0deg); }
+      50% { transform:scaleX(.48) rotate(-9deg); }
+    }
+    @keyframes flyRight {
+      0%,100% { transform:scaleX(1) rotate(0deg); }
+      50% { transform:scaleX(.48) rotate(9deg); }
+    }
+
     .eyebrow {
       margin:0 0 13px;
       font-size:12px;
@@ -77,7 +129,7 @@
       font-weight:400;
       letter-spacing:.035em;
     }
-    p {
+    .intro {
       max-width:520px;
       margin:17px auto 0;
       color:var(--muted);
@@ -86,7 +138,7 @@
     }
     .contact {
       display:inline-flex;
-      margin-top:30px;
+      margin-top:28px;
       padding:13px 21px;
       border:1px solid var(--ink);
       border-radius:999px;
@@ -100,27 +152,150 @@
     footer {
       position:fixed;
       bottom:18px;
+      left:0;
+      width:100%;
+      text-align:center;
       font-size:11px;
       color:#9b9790;
     }
+
     @media (prefers-reduced-motion:reduce) {
-      .wing-left,.wing-right { animation:none; }
+      .wing-left,.wing-right { animation:none !important; }
     }
   </style>
 </head>
 <body>
   <main>
-    <div class="logo" aria-label="Logo HIA">
-      <img src="logo-base.png" alt="">
-      <img class="wing-left" src="butterfly-left.png" alt="">
-      <img class="wing-right" src="butterfly-right.png" alt="">
+    <div class="logo" id="logo" aria-label="Logo HIA">
+      <img class="logo-base" src="logo-base.png" alt="HIA">
     </div>
 
     <p class="eyebrow">Prochainement</p>
     <h1>Une nouvelle expérience du soin corporel.</h1>
-    <p>Notre univers se prépare. Retrouvez bientôt HIA et ses premières créations.</p>
+    <p class="intro">Notre univers se prépare. Retrouvez bientôt HIA et ses premières créations.</p>
     <a class="contact" href="mailto:contact@hiabynevecosmetics.com">Nous contacter</a>
   </main>
+
+  <div class="butterfly-flyer" id="butterfly" aria-hidden="true">
+    <img class="wing-left" src="butterfly-left.png" alt="">
+    <img class="wing-right" src="butterfly-right.png" alt="">
+    <img class="butterfly-body" src="butterfly-body.png" alt="">
+  </div>
+
   <footer>© HIA</footer>
+
+  <script>
+    (() => {
+      const logo = document.getElementById('logo');
+      const butterfly = document.getElementById('butterfly');
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const BUTTER_ASPECT = 0.94315245;
+      const HOME_X = 49.800532 / 100;
+      const HOME_Y = 32.516556 / 100;
+      const HOME_W = 48.537234 / 100;
+
+      let home = {x:0, y:0, width:120};
+      let running = true;
+
+      function calculateHome() {
+        const r = logo.getBoundingClientRect();
+        home.x = r.left + r.width * HOME_X;
+        home.y = r.top + r.height * HOME_Y;
+        home.width = r.width * HOME_W;
+        butterfly.style.width = `${home.width}px`;
+      }
+
+      function placeAtHome() {
+        calculateHome();
+        butterfly.style.transform =
+          `translate3d(${home.x}px, ${home.y}px, 0) translate(-50%, -50%) scale(1) rotate(0deg)`;
+        butterfly.classList.add('ready');
+      }
+
+      function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+
+      function clamp(v, min, max) {
+        return Math.max(min, Math.min(max, v));
+      }
+
+      function point(xRatio, yRatio) {
+        const margin = Math.max(56, home.width * 0.40);
+        return {
+          x: clamp(innerWidth * xRatio, margin, innerWidth - margin),
+          y: clamp(innerHeight * yRatio, margin, innerHeight - margin)
+        };
+      }
+
+      async function flyCycle() {
+        calculateHome();
+
+        // Parcours volontairement ample : haut droit → bas droit → bas gauche → haut gauche → centre.
+        const p1 = point(.76, .18);
+        const p2 = point(.88, .53);
+        const p3 = point(.66, .78);
+        const p4 = point(.20, .70);
+        const p5 = point(.12, .28);
+        const p6 = point(.48, .14);
+
+        butterfly.classList.add('flying');
+
+        const k = [
+          { transform:`translate3d(${home.x}px,${home.y}px,0) translate(-50%,-50%) scale(1) rotate(0deg)`, offset:0 },
+          { transform:`translate3d(${home.x+18}px,${home.y-44}px,0) translate(-50%,-50%) scale(.88) rotate(5deg)`, offset:.07 },
+          { transform:`translate3d(${p1.x}px,${p1.y}px,0) translate(-50%,-50%) scale(.72) rotate(12deg)`, offset:.19 },
+          { transform:`translate3d(${p2.x}px,${p2.y}px,0) translate(-50%,-50%) scale(.66) rotate(20deg)`, offset:.34 },
+          { transform:`translate3d(${p3.x}px,${p3.y}px,0) translate(-50%,-50%) scale(.70) rotate(-8deg)`, offset:.48 },
+          { transform:`translate3d(${p4.x}px,${p4.y}px,0) translate(-50%,-50%) scale(.68) rotate(-18deg)`, offset:.63 },
+          { transform:`translate3d(${p5.x}px,${p5.y}px,0) translate(-50%,-50%) scale(.72) rotate(-8deg)`, offset:.76 },
+          { transform:`translate3d(${p6.x}px,${p6.y}px,0) translate(-50%,-50%) scale(.78) rotate(8deg)`, offset:.87 },
+          { transform:`translate3d(${home.x}px,${home.y}px,0) translate(-50%,-50%) scale(1) rotate(0deg)`, offset:1 }
+        ];
+
+        const animation = butterfly.animate(k, {
+          duration: 13200,
+          easing: 'cubic-bezier(.42,0,.24,1)',
+          fill: 'forwards'
+        });
+
+        await animation.finished;
+        butterfly.classList.remove('flying');
+        placeAtHome();
+
+        // Trêve au centre avant le prochain voyage.
+        await sleep(6000);
+      }
+
+      async function loop() {
+        placeAtHome();
+
+        if (reduceMotion) return;
+
+        // Le papillon reste d'abord quelques secondes dans le H.
+        await sleep(4200);
+
+        while (running) {
+          try {
+            await flyCycle();
+          } catch (e) {
+            placeAtHome();
+            await sleep(1500);
+          }
+        }
+      }
+
+      window.addEventListener('resize', () => {
+        if (!butterfly.classList.contains('flying')) placeAtHome();
+      });
+
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && !butterfly.classList.contains('flying')) placeAtHome();
+      });
+
+      loop();
+    })();
+  </script>
 </body>
 </html>
