@@ -47,21 +47,21 @@
     }
     .wing-left {
       transform-origin:50% 42%;
-      animation:wingLeft 4.8s ease-in-out infinite;
+      animation:wingLeft 6s ease-in-out infinite;
     }
     .wing-right {
       transform-origin:50% 42%;
-      animation:wingRight 4.8s ease-in-out infinite;
+      animation:wingRight 6s ease-in-out infinite;
     }
     @keyframes wingLeft {
       0%,18%,100% { transform:perspective(600px) rotateY(0deg); }
-      7% { transform:perspective(600px) rotateY(13deg); }
-      11% { transform:perspective(600px) rotateY(4deg); }
+      7% { transform:perspective(600px) rotateY(8deg); }
+      11% { transform:perspective(600px) rotateY(2deg); }
     }
     @keyframes wingRight {
       0%,18%,100% { transform:perspective(600px) rotateY(0deg); }
-      7% { transform:perspective(600px) rotateY(-13deg); }
-      11% { transform:perspective(600px) rotateY(-4deg); }
+      7% { transform:perspective(600px) rotateY(-8deg); }
+      11% { transform:perspective(600px) rotateY(-2deg); }
     }
     .eyebrow {
       margin:0 0 13px;
